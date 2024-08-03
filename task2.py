@@ -1,0 +1,62 @@
+# Import necessary libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
+titanic_df = pd.read_csv(url)
+print(titanic_df.head())
+print(titanic_df.isnull().sum())
+titanic_df['Age'].fillna(titanic_df['Age'].median(), inplace=True)
+titanic_df['Embarked'].fillna(titanic_df['Embarked'].mode()[0], inplace=True)
+titanic_df.drop(columns='Cabin', inplace=True)
+print(titanic_df.isnull().sum())
+plt.figure(figsize=(10, 6))
+sns.histplot(titanic_df['Age'], bins=30, kde=True)
+plt.title('Distribution of Passengers\' Ages')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.countplot(data=titanic_df, x='Pclass')
+plt.title('Count of Passengers by Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Count')
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.barplot(data=titanic_df, x='Pclass', y='Survived')
+plt.title('Survival Rate by Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Survival Rate')
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.barplot(data=titanic_df, x='Sex', y='Survived')
+plt.title('Survival Rate by Gender')
+plt.xlabel('Gender')
+plt.ylabel('Survival Rate')
+plt.show()
+
+# Plot the survival rate by age
+plt.figure(figsize=(10, 6))
+sns.histplot(titanic_df[titanic_df['Survived'] == 1]['Age'], bins=30, kde=True, label='Survived', color='green')
+sns.histplot(titanic_df[titanic_df['Survived'] == 0]['Age'], bins=30, kde=True, label='Not Survived', color='red')
+plt.title('Survival Rate by Age')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.legend()
+plt.show()
+
+# Plot the count of passengers by embarkation port
+plt.figure(figsize=(10, 6))
+sns.countplot(data=titanic_df, x='Embarked')
+plt.title('Count of Passengers by Embarkation Port')
+plt.xlabel('Embarkation Port')
+plt.ylabel('Count')
+plt.show()
+
+# Plot the survival rate by embarkation port
+plt.figure(figsize=(10, 6))
+sns.barplot(data=titanic_df, x='Embarked', y='Survived')
+plt.title('Survival Rate by Embarkation Port')
+plt.xlabel('Embarkation Port')
+plt.ylabel('Survival Rate')
+plt.show()
